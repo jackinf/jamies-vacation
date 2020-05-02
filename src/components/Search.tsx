@@ -1,27 +1,46 @@
 import React, { useState } from 'react';
+import moment from 'moment';
+
 import AccuWeatherApi from '../apis/accuWeatherApi';
+import KiwiApi from '../apis/kiwiApi';
 
 const destinations = [
-  {cityName: 'Amsterdam', countryID: 'NL'},
+  {cityName: 'Amsterdam', countryID: 'NL', iataCode: 'AMS'},
+  // {cityName: 'Budapest', countryID: 'HU', iataCode: 'BUD'},
+  // {cityName: 'Madrid', countryID: 'ES', iataCode: 'MAD'},
 ];
 
 export default function Search() {
   const [flyingFrom, setFlyingFrom] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSearch = async () => {
     const promises = [];
     const accuWeatherApi = new AccuWeatherApi();
+    const kiwiApi = new KiwiApi();
+
     setIsSearching(true);
 
     for (let destination of destinations) {
-      const promise = accuWeatherApi.citySearch(destination.cityName)
+      const accuWeatherPromise = accuWeatherApi.citySearch(destination.cityName)
         .then(response => response.find(item => item.Country.ID === destination.countryID))
         .then(foundItem => accuWeatherApi.get1DayForecast(foundItem!.Key))
         .then(forecast => console.log(forecast));
-      promises.push(promise);
+
+      const kiwiPromise = kiwiApi.searchFlights({
+        dateFrom: moment(dateFrom),
+        dateTo: moment(dateTo),
+        flyFromIataCode: flyingFrom,
+        flyToIataCode: destination.iataCode,
+      });
+
+      promises.push(Promise.all([kiwiPromise, accuWeatherPromise]));
     }
-    await Promise.all(promises);
+
+    const result = await Promise.all(promises);
+    console.log("MEGARESULT!", result);
     setIsSearching(false);
   };
 
@@ -34,9 +53,9 @@ export default function Search() {
   return (
     <div>
       <h3>Where are you flying from?</h3>
-      <input type="text" id="flying-from" value={flyingFrom} onChange={e => setFlyingFrom(e.target.value)}/>
-      <input type="date" id="flying-date-from"/>
-      <input type="date" id="flying-date-to"/>
+      <input type="text" id="flying-from" value={flyingFrom} onChange={e => setFlyingFrom(e.target.value)} />
+      <input type="date" id="flying-date-from" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+      <input type="date" id="flying-date-to" value={dateTo} onChange={e => setDateTo(e.target.value)} />
       <button onClick={handleSearch}>Search</button>
     </div>
   );

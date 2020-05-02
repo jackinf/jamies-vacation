@@ -13,7 +13,6 @@ Api's used:
 
 Make sure that you register two environment variables in `.env` file:
 - REACT_APP_ACCUWEATHER_API_KEY=`<your-key>` (to make calls to AccuWeather API)
-- REACT_APP_KIWI_API_KEY=`<your-key>` (to make calls to KIWI API)
 
 ## Available Scripts
 
