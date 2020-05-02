@@ -3,6 +3,8 @@ import moment from 'moment';
 
 import AccuWeatherApi from '../../apis/accuWeatherApi';
 import KiwiApi from '../../apis/kiwiApi';
+import { SearchResultCardProps } from '../SearchResultCard/types';
+import SearchResultCard from '../SearchResultCard/SearchResultCard';
 
 const destinations = [
   {cityName: 'Amsterdam', countryID: 'NL', iataCode: 'AMS'},
@@ -15,6 +17,7 @@ export default function Search() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [results, setResults] = useState<SearchResultCardProps[]>([]);
 
   const handlePrefill = async () => {
     setFlyingFrom("LON");
@@ -49,8 +52,10 @@ export default function Search() {
       promises.push(Promise.all([kiwiPromise, accuWeatherPromise]));
     }
 
-    const result = await Promise.all(promises);
-    console.log("MEGARESULT!", result);
+    const promiseResults = await Promise.all(promises);
+    const objectResult = promiseResults
+      .map(item => ({ flightInfo: item[0], forecastInfo: item[1] }));
+    setResults(objectResult);
     setIsSearching(false);
   };
 
@@ -69,6 +74,8 @@ export default function Search() {
       <input type="date" id="flying-date-from" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
       <input type="date" id="flying-date-to" value={dateTo} onChange={e => setDateTo(e.target.value)} />
       <button onClick={handleSearch}>Search</button>
+      <hr/>
+      {results.map(result => <SearchResultCard flightInfo={result.flightInfo} forecastInfo={result.forecastInfo} />)}
     </div>
   );
 }
