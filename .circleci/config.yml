@@ -1,14 +1,17 @@
-version: 2
-general:
-  branches:
-    only:
-      - develop
-      - master
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
 jobs:
-  build:
-    machine: true
+  build-and-test:
+    executor:
+      name: node/default
     steps:
       - checkout
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker build -t stylehopper/jamies.vacation:latest .
-      - run: docker push stylehopper/jamies.vacation:latest
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
