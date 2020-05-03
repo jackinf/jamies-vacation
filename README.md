@@ -15,7 +15,7 @@ API's used:
 
 ## Screenshot
 
-![Image](https://i.gyazo.com/564469b4eca37bf38f651442dba8414e.png)
+![Image](https://i.gyazo.com/7f32ea003688a71d50629dee3b89fd31.png)
 
 ## Prerequisites
 

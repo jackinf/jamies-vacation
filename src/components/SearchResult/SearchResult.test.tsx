@@ -17,8 +17,8 @@ test('render results on the page', () => {
   expect(getByText(/flight to Amsterdam, Netherlands/i)).toBeInTheDocument();
   expect(getByText(/Flight duration: 2h 10min/i)).toBeInTheDocument();
   expect(getByText(/Price: 55 EUR/i)).toBeInTheDocument();
-  expect(getByText(/Sunny weather/i)).toBeInTheDocument();
-  expect(getByText(/Min: 10 C, Max: 20 C/i)).toBeInTheDocument();
+  expect(getByText(/Today: Sunny weather/i)).toBeInTheDocument();
+  expect(getByText(/Today: Min - 10 C, Max - 20 C/i)).toBeInTheDocument();
 });
 
 test('render error message on the page', () => {

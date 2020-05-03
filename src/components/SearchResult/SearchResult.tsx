@@ -47,28 +47,28 @@ export default function SearchResult(props: SearchResultProps) {
       <CardContent>
         <List component="nav" aria-label="main mailbox folders">
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.flightIcon}>
               <FlightIcon />
             </ListItemIcon>
             <ListItemText primary={`Flight duration: ${flightDuration}`} />
           </ListItem>
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.euroIcon}>
               <EuroIcon />
             </ListItemIcon>
             <ListItemText primary={`Price: ${flightPrice}`} />
           </ListItem>
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.infoIcon}>
               <InfoIcon />
             </ListItemIcon>
-            <ListItemText primary={forecastHeadline} />
+            <ListItemText primary={`Today: ${forecastHeadline}`} />
           </ListItem>
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.wbSunnyIcon}>
               <WbSunnyIcon />
             </ListItemIcon>
-            <ListItemText primary={`Min: ${minTemperature}, Max: ${maxTemperature}`} />
+            <ListItemText primary={`Today: Min - ${minTemperature}, Max - ${maxTemperature}`} />
           </ListItem>
         </List>
       </CardContent>

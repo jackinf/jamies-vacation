@@ -49,6 +49,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
     const accuWeatherApi = new AccuWeatherApi(accuWeatherApiKey);
     const kiwiApi = new KiwiApi();
 
+    const newResults: Array<SearchResultProps> = [];
     setResults([]);
     setIsSearching(true);
 
@@ -67,12 +68,12 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
       const promise = Promise.all([kiwiPromise, accuWeatherPromise])
         .then(item => mapToSearchResultProps(item[1], item[0]))
         .then(item => {
-          results.push({ destinationInfo: item || undefined });
-          setResults(results);
+          newResults.push({ destinationInfo: item || undefined });
+          setResults(newResults);
         })
         .catch((error: string) => {
-          results.push({ error: { flightDestination: `${destination.cityName}, ${destination.countryName}`, message: "Failed to collect data. Check your input fields as well as Api token" } });
-          setResults(results);
+          newResults.push({ error: { flightDestination: `${destination.cityName}, ${destination.countryName}`, message: "Failed to collect data. Check your input fields as well as Api token" } });
+          setResults(newResults);
         });
       promises.push(promise);
     }

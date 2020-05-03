@@ -17,7 +17,10 @@ export default class KiwiApi {
     params.append("curr", "EUR");
     params.append("one_for_city", "1");
 
-    const response = await fetch(`${url}?${params}`);
-    return await response.json();
+    const httpResponse = await fetch(`${url}?${params}`);
+    if (!httpResponse.ok) {
+      throw Error("Call failed")
+    }
+    return await httpResponse.json();
   }
 }
