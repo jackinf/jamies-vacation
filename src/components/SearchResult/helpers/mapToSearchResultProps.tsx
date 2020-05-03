@@ -1,5 +1,5 @@
-import { NDayForecastResponse } from '../../../apis/accuWeatherApi/types';
-import { SearchFlightsResponse } from '../../../apis/kiwiApi/types';
+import { NDayForecastResponse } from '../../../apis/AccuWeatherApi/types';
+import { SearchFlightsResponse } from '../../../apis/KiwiApi/types';
 import { OfficeInfo } from '../types';
 
 export default function mapToSearchResultProps(

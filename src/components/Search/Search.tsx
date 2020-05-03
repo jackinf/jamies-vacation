@@ -10,8 +10,8 @@ import CardActions from '@material-ui/core/CardActions';
 import Grid from '@material-ui/core/Grid';
 
 import useStyles from './styles';
-import AccuWeatherApi from '../../apis/accuWeatherApi';
-import KiwiApi from '../../apis/kiwiApi';
+import AccuWeatherApi from '../../apis/AccuWeatherApi';
+import KiwiApi from '../../apis/KiwiApi';
 import { SearchResultProps } from '../SearchResult/types';
 import SearchResult from '../SearchResult/SearchResult';
 import { Errors, SearchProps } from './types';
