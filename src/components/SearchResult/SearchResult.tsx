@@ -12,10 +12,24 @@ import InfoIcon from '@material-ui/icons/Info';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
 import { SearchResultProps } from './types';
+import useStyles from './styles';
 
 export default function SearchResult(props: SearchResultProps) {
+  const classes = useStyles();
+
+  if (props.error) {
+    return (
+      <Card>
+        <CardHeader title={`Flight to ${props.error.flightDestination}`} />
+        <CardContent className={classes.error}>
+          {props.error.message}
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (!props.officeInfo) {
-    return <div>No info to display</div>
+    return null;
   }
 
   const {

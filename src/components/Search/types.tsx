@@ -1,11 +1,14 @@
 import { Moment } from 'moment';
 
+export interface Destination {
+  cityName: string;
+  countryName: string;
+  countryID: string;
+  iataCode: string;
+}
+
 export interface SearchProps {
-  destinations: Array<{
-    cityName: string;
-    countryID: string;
-    iataCode: string;
-  }>;
+  destinations: Array<Destination>;
   accuWeatherApiKey: string;
 }
 

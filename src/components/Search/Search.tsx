@@ -12,22 +12,12 @@ import Grid from '@material-ui/core/Grid';
 import useStyles from './styles';
 import AccuWeatherApi from '../../apis/accuWeatherApi';
 import KiwiApi from '../../apis/kiwiApi';
-import { OfficeInfo } from '../SearchResult/types';
+import { SearchResultProps } from '../SearchResult/types';
 import SearchResult from '../SearchResult/SearchResult';
 import { Errors, SearchProps } from './types';
 import { LinearProgress } from '@material-ui/core';
 import mapToSearchResultProps from '../SearchResult/helpers/mapToSearchResultProps';
 import validate from './helpers/validate';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const dummy = {
-  flightDestination: 'flightDestination',
-  flightDuration: 'flightDuration',
-  flightPrice: 'flightPrice',
-  forecastHeadline: 'forecastHeadline',
-  minTemperature: 'minTemperature',
-  maxTemperature: 'maxTemperature',
-};
 
 export default function Search({ destinations, accuWeatherApiKey }: SearchProps) {
   const classes = useStyles();
@@ -36,7 +26,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
   const [dateFrom, setDateFrom] = useState<moment.Moment | null>(null);
   const [dateTo, setDateTo] = useState<moment.Moment | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [results, setResults] = useState<Array<OfficeInfo | null>>([]);
+  const [results, setResults] = useState<Array<SearchResultProps>>([]);
   const [errors, setErrors] = useState<Errors>({ hasErrors: false });
 
   const handlePrefill = async () => {
@@ -77,7 +67,11 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
       const promise = Promise.all([kiwiPromise, accuWeatherPromise])
         .then(item => mapToSearchResultProps(item[1], item[0]))
         .then(item => {
-          results.push(item);
+          results.push({ officeInfo: item || undefined });
+          setResults(results);
+        })
+        .catch((error: string) => {
+          results.push({ error: { flightDestination: `${destination.cityName}, ${destination.countryName}`, message: "Failed to collect data. Check your input fields as well as Api token" } });
           setResults(results);
         });
       promises.push(promise);
@@ -100,7 +94,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
         <CardContent>
           <TextField
             id="flying-from"
-            label="Flying from"
+            label="IATA code"
             variant="outlined"
             value={flyingFrom}
             onChange={e => setFlyingFrom(e.target.value)}
@@ -143,7 +137,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
       <Grid container spacing={3} className={classes.section}>
         {results.map((result, key) => (
           <Grid key={key} item md={6} className={classes.gridItem}>
-            <SearchResult officeInfo={result} />
+            <SearchResult officeInfo={result.officeInfo} error={result.error} />
           </Grid>
         ))}
       </Grid>
