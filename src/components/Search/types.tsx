@@ -6,6 +6,7 @@ export interface SearchProps {
     countryID: string;
     iataCode: string;
   }>;
+  accuWeatherApiKey: string;
 }
 
 export interface Errors {

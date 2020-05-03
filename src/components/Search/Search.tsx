@@ -29,7 +29,7 @@ const dummy = {
   maxTemperature: 'maxTemperature',
 };
 
-export default function Search({ destinations }: SearchProps) {
+export default function Search({ destinations, accuWeatherApiKey }: SearchProps) {
   const classes = useStyles();
 
   const [flyingFrom, setFlyingFrom] = useState('');
@@ -56,7 +56,7 @@ export default function Search({ destinations }: SearchProps) {
     }
 
     const promises = [];
-    const accuWeatherApi = new AccuWeatherApi();
+    const accuWeatherApi = new AccuWeatherApi(accuWeatherApiKey);
     const kiwiApi = new KiwiApi();
 
     setResults([]);
@@ -83,8 +83,8 @@ export default function Search({ destinations }: SearchProps) {
       promises.push(promise);
     }
 
-    await Promise.all(promises);
-    setIsSearching(false);
+    Promise.all(promises)
+      .finally(() => setIsSearching(false));
   };
 
   return (
