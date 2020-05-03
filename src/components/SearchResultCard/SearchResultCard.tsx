@@ -1,31 +1,63 @@
 import React from 'react';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import FlightIcon from '@material-ui/icons/Flight';
+import EuroIcon from '@material-ui/icons/Euro';
+import InfoIcon from '@material-ui/icons/Info';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+
 import { SearchResultCardProps } from './types';
 
 export default function SearchResultCard(props: SearchResultCardProps) {
-  const { flightInfo, forecastInfo } = props;
-
-  if (!flightInfo.data) {
-    return <div>Can't fly there :(</div>
+  if (!props.officeInfo) {
+    return <div>No info to display</div>
   }
-  const flight = flightInfo.data[0];
 
-  const temperature = forecastInfo?.DailyForecasts && forecastInfo.DailyForecasts[0].Temperature;
-  const temperatureLi = temperature && (
-    <li>
-      Min: {temperature.Minimum.Value} {temperature.Minimum.Unit},
-      Max: {temperature.Maximum.Value} {temperature.Maximum.Unit}
-    </li>
-  );
+  const {
+    flightDestination,
+    flightDuration,
+    flightPrice,
+    forecastHeadline,
+    minTemperature,
+    maxTemperature,
+  } = props.officeInfo;
 
   return (
-    <div style={{"border": "2px solid black"}}>
-      <h3>Flight to {flight.cityTo}, {flight.countryTo.name}</h3>
-      <ul>
-        <li>Price: {flight.price} {flightInfo.currency}</li>
-        <li>Flight duration: {flight.fly_duration}</li>
-        <li>{forecastInfo?.Headline?.Text}</li>
-        {temperatureLi}
-      </ul>
-    </div>
+    <Card>
+      <CardHeader title={`Flight to ${flightDestination}`} />
+      <CardContent>
+        <List component="nav" aria-label="main mailbox folders">
+          <ListItem>
+            <ListItemIcon>
+              <FlightIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Flight duration: ${flightDuration}`} />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <EuroIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Price: ${flightPrice}`} />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary={forecastHeadline} />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <WbSunnyIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Min: ${minTemperature}, Max: ${maxTemperature}`} />
+          </ListItem>
+        </List>
+      </CardContent>
+    </Card>
   )
 }

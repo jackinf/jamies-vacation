@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import config from '../../config';
+import TextField from '@material-ui/core/TextField/TextField';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 
 export default function ApiTokenConfigurator() {
   const [token, setToken] = useState('');
@@ -24,17 +30,24 @@ export default function ApiTokenConfigurator() {
     setToken('');
   };
 
-  const message = overriddenToken
-    ? <p>Using overridden token from local storage</p> : config.apiKeys.getDefaultAccuWeatherApiKey()
-      ? <p>Using default token</p> : <p>No token defined!</p>;
-
   return (
-    <div>
-      <h3>Token for AccuWeather API</h3>
-      {message}
-      <input type="text" id="accuweather-token" value={token} onChange={e => setToken(e.target.value)}/>
-      {token && <button onClick={overrideToken}>Set token</button>}
-      {overriddenToken && <button onClick={clearOverriddenToken}>Clear token</button>}
-    </div>
+    <Card>
+      <CardHeader title="Token for AccuWeather API" />
+      <CardContent>
+        {overriddenToken || (
+          <TextField
+            id="accuweather-token"
+            label="Token"
+            variant="outlined"
+            value={token}
+            onChange={e => setToken(e.target.value)}
+          />
+        )}
+      </CardContent>
+      <CardActions>
+        <Button variant="contained" color="primary" onClick={overrideToken}>Set token</Button>
+        {overriddenToken && <Button variant="contained" color="secondary" onClick={clearOverriddenToken}>Clear token</Button>}
+      </CardActions>
+    </Card>
   )
 }

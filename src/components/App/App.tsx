@@ -9,6 +9,8 @@ import MomentUtils from '@date-io/moment';
 
 import ApiTokenConfigurator from '../ApiTokenConfigurator';
 import Search from '../Search';
+import { Card } from '@material-ui/core';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  section: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  }
 }));
 
 function App() {
@@ -34,13 +40,17 @@ function App() {
         </AppBar>
 
         <Container maxWidth="md">
-          <div>
-            This app will help you decide which office is better for you
+          <div className={classes.section}>
+            <Card>
+              <CardContent>
+                This app will help you decide which office is better for you
+              </CardContent>
+            </Card>
           </div>
-          <div>
+          <div className={classes.section}>
             <ApiTokenConfigurator />
           </div>
-          <div>
+          <div className={classes.section}>
             <Search destinations={[
               {cityName: 'Amsterdam', countryID: 'NL', iataCode: 'AMS'},
               {cityName: 'Budapest', countryID: 'HU', iataCode: 'BUD'},

@@ -1,7 +1,12 @@
-import { NDayForecastResponse } from '../../apis/accuWeatherApi/types';
-import { SearchFlightsResponse } from '../../apis/kiwiApi/types';
+export interface OfficeInfo {
+  flightDestination: string;
+  flightDuration: string;
+  flightPrice: string;
+  forecastHeadline: string;
+  minTemperature: string;
+  maxTemperature: string;
+}
 
 export interface SearchResultCardProps {
-  forecastInfo: NDayForecastResponse;
-  flightInfo: SearchFlightsResponse;
+  officeInfo: OfficeInfo | null;
 }

@@ -11,7 +11,7 @@ Api's used:
 
 ## Screenshot
 
-![Image](https://i.gyazo.com/04c2a81beb62f14d42c128d3299e2ea0.png)
+![Image](https://i.gyazo.com/564469b4eca37bf38f651442dba8414e.png)
 
 ## Before starting the application...
 
