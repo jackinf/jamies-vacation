@@ -11,9 +11,9 @@ import EuroIcon from '@material-ui/icons/Euro';
 import InfoIcon from '@material-ui/icons/Info';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
-import { SearchResultCardProps } from './types';
+import { SearchResultProps } from './types';
 
-export default function SearchResultCard(props: SearchResultCardProps) {
+export default function SearchResult(props: SearchResultProps) {
   if (!props.officeInfo) {
     return <div>No info to display</div>
   }

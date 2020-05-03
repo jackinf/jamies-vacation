@@ -7,6 +7,6 @@ export interface OfficeInfo {
   maxTemperature: string;
 }
 
-export interface SearchResultCardProps {
+export interface SearchResultProps {
   officeInfo: OfficeInfo | null;
 }

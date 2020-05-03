@@ -2,7 +2,7 @@ import { NDayForecastResponse } from '../../../apis/accuWeatherApi/types';
 import { SearchFlightsResponse } from '../../../apis/kiwiApi/types';
 import { OfficeInfo } from '../types';
 
-export default function mapToSearchResultCardProps(
+export default function mapToSearchResultProps(
   forecastInfo: NDayForecastResponse,
   flightInfo: SearchFlightsResponse): OfficeInfo | null {
   if (!flightInfo.data) {

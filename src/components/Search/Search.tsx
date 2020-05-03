@@ -12,11 +12,12 @@ import Grid from '@material-ui/core/Grid';
 import useStyles from './styles';
 import AccuWeatherApi from '../../apis/accuWeatherApi';
 import KiwiApi from '../../apis/kiwiApi';
-import { OfficeInfo } from '../SearchResultCard/types';
-import SearchResultCard from '../SearchResultCard/SearchResultCard';
-import { SearchProps } from './types';
+import { OfficeInfo } from '../SearchResult/types';
+import SearchResult from '../SearchResult/SearchResult';
+import { Errors, SearchProps } from './types';
 import { LinearProgress } from '@material-ui/core';
-import mapToSearchResultCardProps from '../SearchResultCard/helpers/mapToSearchResultCardProps';
+import mapToSearchResultProps from '../SearchResult/helpers/mapToSearchResultProps';
+import validate from './helpers/validate';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dummy = {
@@ -32,10 +33,11 @@ export default function Search({ destinations }: SearchProps) {
   const classes = useStyles();
 
   const [flyingFrom, setFlyingFrom] = useState('');
-  const [dateFrom, setDateFrom] = useState<moment.Moment | null>();
-  const [dateTo, setDateTo] = useState<moment.Moment | null>();
+  const [dateFrom, setDateFrom] = useState<moment.Moment | null>(null);
+  const [dateTo, setDateTo] = useState<moment.Moment | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<Array<OfficeInfo | null>>([]);
+  const [errors, setErrors] = useState<Errors>({ hasErrors: false });
 
   const handlePrefill = async () => {
     setFlyingFrom("LON");
@@ -47,8 +49,9 @@ export default function Search({ destinations }: SearchProps) {
   };
 
   const handleSearch = async () => {
-    if (!dateFrom || !dateTo) {
-      // TODO: toggle validation
+    const errors = validate({ flyingFrom, dateFrom, dateTo });
+    setErrors(errors);
+    if (errors.hasErrors) {
       return;
     }
 
@@ -65,14 +68,14 @@ export default function Search({ destinations }: SearchProps) {
         .then(foundItem => accuWeatherApi.get1DayForecast(foundItem!.Key));
 
       const kiwiPromise = kiwiApi.searchFlights({
-        dateFrom: dateFrom,
-        dateTo: dateTo,
+        dateFrom: dateFrom!,
+        dateTo: dateTo!,
         flyFromIataCode: flyingFrom,
         flyToIataCode: destination.iataCode,
       });
 
       const promise = Promise.all([kiwiPromise, accuWeatherPromise])
-        .then(item => mapToSearchResultCardProps(item[1], item[0]))
+        .then(item => mapToSearchResultProps(item[1], item[0]))
         .then(item => {
           results.push(item);
           setResults(results);
@@ -101,6 +104,8 @@ export default function Search({ destinations }: SearchProps) {
             variant="outlined"
             value={flyingFrom}
             onChange={e => setFlyingFrom(e.target.value)}
+            error={!!errors?.flyingFrom?.text}
+            helperText={errors?.flyingFrom?.text}
           />
           &nbsp;
           <KeyboardDatePicker
@@ -112,6 +117,8 @@ export default function Search({ destinations }: SearchProps) {
             value={dateFrom}
             InputAdornmentProps={{ position: "start" }}
             onChange={setDateFrom}
+            error={!!errors?.dateFrom?.text}
+            helperText={errors?.dateFrom?.text}
           />
           &nbsp;
           <KeyboardDatePicker
@@ -123,6 +130,8 @@ export default function Search({ destinations }: SearchProps) {
             value={dateTo}
             InputAdornmentProps={{ position: "start" }}
             onChange={setDateTo}
+            error={!!errors?.dateTo?.text}
+            helperText={errors?.dateTo?.text}
           />
         </CardContent>
         <CardActions>
@@ -134,7 +143,7 @@ export default function Search({ destinations }: SearchProps) {
       <Grid container spacing={3} className={classes.section}>
         {results.map((result, key) => (
           <Grid key={key} item md={6} className={classes.gridItem}>
-            <SearchResultCard officeInfo={result} />
+            <SearchResult officeInfo={result} />
           </Grid>
         ))}
       </Grid>

@@ -12,20 +12,20 @@ export default function ApiTokenConfigurator() {
   const [overriddenToken, setOverriddenToken] = useState('');
 
   useEffect(() => {
-    const overriddenToken = config.apiKeys.getOverriddenAccuWeatherApiKey();
+    const overriddenToken = config.apiKeys.getAccuWeatherApiKey();
     if (overriddenToken) {
       setOverriddenToken(overriddenToken);
     }
   }, []);
 
   const clearOverriddenToken = () => {
-    config.apiKeys.removeOverriddenAccuWeatherApiKey();
+    config.apiKeys.removeAccuWeatherApiKey();
     setOverriddenToken('');
     setToken('');
   };
 
   const overrideToken = () => {
-    config.apiKeys.overrideAccuWeatherApiKey(token);
+    config.apiKeys.setAccuWeatherApiKey(token);
     setOverriddenToken(token);
     setToken('');
   };
@@ -45,7 +45,7 @@ export default function ApiTokenConfigurator() {
         )}
       </CardContent>
       <CardActions>
-        <Button variant="contained" color="primary" onClick={overrideToken}>Set token</Button>
+        {!overriddenToken && <Button variant="contained" color="primary" onClick={overrideToken}>Set token</Button>}
         {overriddenToken && <Button variant="contained" color="secondary" onClick={clearOverriddenToken}>Clear token</Button>}
       </CardActions>
     </Card>

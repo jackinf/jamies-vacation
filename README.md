@@ -15,8 +15,7 @@ Api's used:
 
 ## Before starting the application...
 
-Make sure that you register two environment variables in `.env` file:
-- `REACT_APP_ACCUWEATHER_API_KEY`=`<your-key>` (to make calls to AccuWeather API)
+Make sure that you have AccuWeather API key. App will ask to set it before querying.
 
 ## Available Scripts
 
