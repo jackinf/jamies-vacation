@@ -31,7 +31,7 @@ export default function Main() {
           <CardHeader title="Destinations" />
           <CardContent>
             {hardcodedDestinations.map((item, index) => (
-              <Chip key={index} label={item.cityName} className={classes.chip} color="primary" />
+              <Chip key={index} label={`${item.cityName} (${item.iataCode})`} className={classes.chip} color="primary" />
             ))}
           </CardContent>
         </Card>

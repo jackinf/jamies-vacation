@@ -8,6 +8,6 @@ export interface OfficeInfo {
 }
 
 export interface SearchResultProps {
-  officeInfo?: OfficeInfo;
+  destinationInfo?: OfficeInfo;
   error?: { flightDestination: string, message: string }
 }

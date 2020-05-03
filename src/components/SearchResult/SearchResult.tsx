@@ -28,7 +28,7 @@ export default function SearchResult(props: SearchResultProps) {
     );
   }
 
-  if (!props.officeInfo) {
+  if (!props.destinationInfo) {
     return null;
   }
 
@@ -39,7 +39,7 @@ export default function SearchResult(props: SearchResultProps) {
     forecastHeadline,
     minTemperature,
     maxTemperature,
-  } = props.officeInfo;
+  } = props.destinationInfo;
 
   return (
     <Card>

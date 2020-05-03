@@ -29,7 +29,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
   const [results, setResults] = useState<Array<SearchResultProps>>([]);
   const [errors, setErrors] = useState<Errors>({ hasErrors: false });
 
-  const handlePrefill = async () => {
+  const handlePreFill = async () => {
     setFlyingFrom("LON");
     setDateFrom(moment()
       .add(6, "months"));
@@ -67,7 +67,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
       const promise = Promise.all([kiwiPromise, accuWeatherPromise])
         .then(item => mapToSearchResultProps(item[1], item[0]))
         .then(item => {
-          results.push({ officeInfo: item || undefined });
+          results.push({ destinationInfo: item || undefined });
           setResults(results);
         })
         .catch((error: string) => {
@@ -129,7 +129,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
           />
         </CardContent>
         <CardActions>
-          <Button variant="contained" onClick={handlePrefill}>Prefill fields</Button> &nbsp;
+          <Button variant="contained" onClick={handlePreFill}>Pre-fill fields</Button> &nbsp;
           <Button variant="contained" color="primary" onClick={handleSearch} disabled={isSearching}>Search</Button>
         </CardActions>
       </Card>
@@ -137,7 +137,7 @@ export default function Search({ destinations, accuWeatherApiKey }: SearchProps)
       <Grid container spacing={3} className={classes.section}>
         {results.map((result, key) => (
           <Grid key={key} item md={6} className={classes.gridItem}>
-            <SearchResult officeInfo={result.officeInfo} error={result.error} />
+            <SearchResult destinationInfo={result.destinationInfo} error={result.error} />
           </Grid>
         ))}
       </Grid>
